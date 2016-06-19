@@ -3,17 +3,26 @@ Based on guide posted at:
 https://www.fullstackpython.com/blog/build-first-slack-bot-python.html
 """
 
+import os
 import sys
 import time
-from slackclient import SlackClient
-
 try:
-    from token import token
-    #print(token.SLACK_BOT_TOKEN)
-    SLACK_BOT_TOKEN = token.SLACK_BOT_TOKEN
-except ImportError:
-    print("Coudln't open SLACK_BOT_TOKEN in token/token.py")
+    from slackclient import SlackClient
+except ImportError as err:
+    print("")
+    print(err)
+    print("")
+    print("Did you forget to `$ pip install slackclient`? Quitting.")
+    print("")
     sys.exit(1)
+
+# Assign the token via environment variable
+try:
+    SLACK_BOT_TOKEN = os.environ["SLACK_BOT_TOKEN"]
+except KeyError:
+    print("")
+    print("Did you forget to `$ export SLACK_BOT_TOKEN=`token here` in this session?")
+    print("")
 
 # BOT_ID gathered from get_pybot_id.py
 BOT_ID = "U1J60L0F2"
@@ -35,8 +44,7 @@ def handle_command(command, channel):
         "* command with numbers, delimited by spaces."
     if command.startswith(EXAMPLE_COMMAND):
         response = "Sure .. write some code and I can do that."
-    if command.startswith(EXAMPLE_COMMAND + " add "):
-        slack_client.api_call("chat.postMessage", channel=channel,
+    slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
 
