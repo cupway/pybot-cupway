@@ -73,7 +73,4 @@ Set environment variables:
 If using a virtualenv for local Python dev, activate it:  
 `$ source bin/activate`
 
-### Github Repo
-
-[https://github.com/cupway/pybot-cupway.git](https://github.com/cupway/pybot-cupway.git)
 
