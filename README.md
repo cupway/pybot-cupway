@@ -1,20 +1,22 @@
 ### PyBot on Heroku
 
-[Heroku: Configuration and Config Vars](https://devcenter.heroku.com/articles/config-vars#setting-up-config-vars-for-a-deployed-application)
+#### Useful Links
+
+* [Heroku: Configuration and Config Vars](https://devcenter.heroku.com/articles/config-vars#setting-up-config-vars-for-a-deployed-application)
+* [Slack API](https://api.slack.com/)
+* [How to Build Your First Slack Bot With Python](https://www.fullstackpython.com/blog/build-first-slack-bot-python.html) -- Tutorial this bot is based on
+
+### Pushing Updates to Heroku
+
+Need to be a *Collaborator* in the Heroku app config.
 
 Download the [Heroku Toolbelt](https://toolbelt.heroku.com/)
 
 Login to Heroku:  
 `$ heroku login`
 
-Add the application:  
+Add the application ([Creating a Heroku remote](https://devcenter.heroku.com/articles/git#creating-a-heroku-remote)):  
 `$ heroku git:remote -a pybot-cupway`
-
-If using a virtualenv, activate it:  
-`$ source bin/activate`
-
-Set environment variables:  
-`$ export SLACK_BOT_TOKEN="put generated token here"`
 
 Deploy code:  
 `$ git push heroku master`
@@ -50,3 +52,28 @@ worker.1: up 2016/06/18 23:16:17 -0600 (~ 3s ago)
 
 Display running Heroku processes:  
 `$ heroku ps`
+
+### Configuration Notes
+
+In [Heroku Settings](https://dashboard.heroku.com/apps/pybot-cupway/settings), `SLACK_BOT_TOKEN` has to be configured as a configuration variable:
+
+![SLACK_BOT_TOKEN config](images/config_vars.jpg)
+
+`requirements.txt` referencing the Python `slackclient` module is needed.
+
+
+### Local Dev (Non Heroku)
+
+If we've removed the bot from Heroku, or stopped the `worker` Dyno it's running under and want to test locally, the code is set to pull the bot token from a (per console session) environment variable. 
+
+Set environment variables:  
+`$ export SLACK_BOT_TOKEN="put generated token here"`
+
+
+If using a virtualenv for local Python dev, activate it:  
+`$ source bin/activate`
+
+### Github Repo
+
+[https://github.com/cupway/pybot-cupway.git](https://github.com/cupway/pybot-cupway.git)
+
