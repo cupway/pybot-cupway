@@ -1,0 +1,20 @@
+# OSX
+.DS_Store
+
+# Token directory
+token/token.py
+
+# Vim
+*.swp
+*.swo
+
+# Virtualenv stuff
+pip-selfcheck.json
+.Python
+/lib
+/include
+/bin
+
+# Python
+*.pyc
+
