@@ -44,6 +44,8 @@ def handle_command(command, channel):
         "* command with numbers, delimited by spaces."
     if command.startswith(EXAMPLE_COMMAND):
         response = "Sure .. write some code and I can do that."
+    if command.startswith("leave"):
+        response = "Channel is {0}. Your command was: {1}".format(channel, command)
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
