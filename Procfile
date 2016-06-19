@@ -1,1 +1,1 @@
-web: python pybot.py
+worker: python pybot.py
