@@ -15,3 +15,6 @@ If using a virtualenv, activate it:
 
 Set environment variables:  
 `$ export SLACK_BOT_TOKEN="put generated token here"`
+
+Deploy code:  
+`$ git push heroku master`
