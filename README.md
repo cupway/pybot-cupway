@@ -55,7 +55,7 @@ Display running Heroku processes:
 
 ### Configuration Notes
 
-In [Heroku Settings](https://dashboard.heroku.com/apps/pybot-cupway/settings), `SLACK_BOT_TOKEN` has to be configured as a configuration variable:
+In [Heroku Settings](https://dashboard.heroku.com/apps/pybot-cupway/settings), `SLACK_BOT_TOKEN` has to be set as a configuration variable:
 
 ![SLACK_BOT_TOKEN config](images/config_vars.jpg)
 

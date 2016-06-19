@@ -21,10 +21,10 @@ try:
     SLACK_BOT_TOKEN = os.environ["SLACK_BOT_TOKEN"]
 except KeyError:
     print("")
-    print("Did you forget to `$ export SLACK_BOT_TOKEN=`token here` in this session?")
+    print("Is SLACK_BOT_TOKEN configured in Heroku app Settings w/ a valid Slack token?")
     print("")
 
-# BOT_ID gathered from get_pybot_id.py
+# Use the BOT_ID gathered from get_pybot_id.py
 BOT_ID = "U1J60L0F2"
 
 AT_BOT = "<@" + BOT_ID + ">:"
