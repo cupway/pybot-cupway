@@ -46,8 +46,10 @@ def handle_command(command, channel):
         response = "Sure .. write some code and I can do that."
     if command.startswith("leave"):
         #response = "Channel is {0}. Your command was: {1}".format(channel, command)
-        response = "Okay. Leaving channel {0}".format(channel)
-        slack_client.api_call("channels.leave", channel=channel)
+        channel_to_leave = command[1]
+        data_about_channel = slack_client.api_call("channels.info", channel=channel_to_leave)
+        response = "Channel: {0}. Data about channel: {1}".format(channel_to_leave, data_about_channel)
+        #slack_client.api_call("channels.leave", channel=channel)
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
