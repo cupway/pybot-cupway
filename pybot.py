@@ -66,6 +66,9 @@ def handle_command(command, channel):
         try:
             command_dollar_amount = int(command_dollar_amount)
             vidcard_number = vidcard_calc(command_dollar_amount)
+            # if it's an even number, example 20.0, strip off the decimal
+            if vidcard_number % 2 == 0:
+                vidcard_number = int(vidcard_number)
             if vidcard_number < 1:
                 response = "That's not even one video card ;("
             else:
