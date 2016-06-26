@@ -52,10 +52,12 @@ def handle_command(command, channel):
     :param channel:
     :return:
     """
-    response = "Not sure what you mean. Use the *" + EXAMPLE_COMMAND + \
-        "* command with numbers, delimited by spaces."
+    response = "I don't understand that command. If this is an issue / error, please track it.\
+        \nhttps://github.com/cupway/pybot-cupway/issues"
+
     if command.startswith(EXAMPLE_COMMAND):
         response = "Sure .. write some code and I can do that."
+
     if command.startswith(VIDCARD_COMMAND):
         print(command) # only shows up in logging, $ heroku log -n 50
         command_dollar_amount = command.split(" ")[1]
@@ -74,10 +76,10 @@ def handle_command(command, channel):
             # if it's not an even float, limit decimals to 2 places
             if (vidcard_number % 2 == 0) == False:
                 vidcard_number = round(vidcard_number, 2)
-                vidcard_number = "{:,}".format(vidcard_number)
             if vidcard_number < 1:
                 response = "That's not even one video card ;("
-            else:
+            if vidcard_number >= 1:
+                vidcard_number = "{:,}".format(vidcard_number)
                 response = "That's {0} video cards!".format(vidcard_number)
         except ValueError:
             response = "You need to give me a number!"
