@@ -65,10 +65,6 @@ def help_menu(help_term=None):
         output += "Here is help on that command:\n"
         output = help_items[help_term]
 
-    # if `@pybot: help foo` and foo is unknown
-    if help_term not in help_items:
-        output += "Hmm, I don't know that command. Type `@pybot: help` for help on all my commands."
-
     # if user doesn't pass a specific term list all the help
     elif help_term == None:
         output += "Here is help for all my commands:\n"
