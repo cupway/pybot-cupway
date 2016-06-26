@@ -30,6 +30,7 @@ except KeyError:
 BOT_ID = "U1J60L0F2"
 
 AT_BOT = "<@" + BOT_ID + ">:"
+
 EXAMPLE_COMMAND = "do"
 VIDCARD_COMMAND = "vidcard"
 
@@ -54,8 +55,14 @@ def handle_command(command, channel):
     if command.startswith(EXAMPLE_COMMAND):
         response = "Sure .. write some code and I can do that."
     if command.startswith(VIDCARD_COMMAND):
-        print(command)
+        print(command) # only shows up in logging, $ heroku log -n 50
         command_dollar_amount = command.split(" ")[1]
+        # Get rid of preceding dollar signs if present
+        if command_dollar_amount.startswith("$"):
+            command_dollar_amount = command_dollar_amount.lstrip("$")
+        # Get rid of commas if present
+        if "," in command_dollar_amount:
+            command_dollar_amount = command_dollar_amount.replace(",", "")
         try:
             command_dollar_amount = int(command_dollar_amount)
             vidcard_number = vidcard_calc(command_dollar_amount)

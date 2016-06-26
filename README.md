@@ -53,6 +53,9 @@ worker.1: up 2016/06/18 23:16:17 -0600 (~ 3s ago)
 Display running Heroku processes:  
 `$ heroku ps`
 
+Check Heroku logs (get last 50 lines):  
+`$ heroku logs -n 50`
+
 ### Configuration Notes
 
 In [Heroku Settings](https://dashboard.heroku.com/apps/pybot-cupway/settings), `SLACK_BOT_TOKEN` has to be set as a configuration variable:
