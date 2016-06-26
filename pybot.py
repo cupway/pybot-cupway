@@ -79,8 +79,8 @@ def handle_command(command, channel):
     :return:
     """
     response = """
-        I don't understand that command. If this is an issue / error, please track it.
-        https://github.com/cupway/pybot-cupway/issues
+        I don't understand that command. If this is an issue / error, please track it.\n
+        https://github.com/cupway/pybot-cupway/issues\n
         For help, type `@pybot: help`
     """
 
@@ -136,6 +136,7 @@ def handle_command(command, channel):
 
 
     # Always send the response we built above:
+    # unfurl
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True, unfurl_links=False, unfurl_media=True)
 

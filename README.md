@@ -11,6 +11,7 @@ A Python bot for a [Slack](https://slack.com/) group. It uses the [Python slack 
 * [How to Build Your First Slack Bot With Python](https://www.fullstackpython.com/blog/build-first-slack-bot-python.html) -- Tutorial the original skeleton of this bot is based on (pre customization)
 * [Python docs: .format & comma as thousands separator](https://docs.python.org/3/library/string.html#format-specification-mini-language)
 * [Python virtual environments: virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/#virtualenv) - *"virtualenv is a tool to create isolated Python environments"*
+* [Slack API: unfurling (previews)](https://api.slack.com/docs/message-attachments#unfurling)
 
 ### Pushing Updates to Heroku
 
