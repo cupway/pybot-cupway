@@ -1,4 +1,8 @@
-### PyBot on Heroku
+## PyBot on Heroku
+
+#### What is this?
+
+A Python bot for a [Slack](https://slack.com/) group. It uses the [Python slack client](https://github.com/slackhq/python-slackclient) which is a Python wrapper for the Slack API.
 
 #### Useful Links
 
@@ -6,12 +10,12 @@
 * [Slack API](https://api.slack.com/)
 * [How to Build Your First Slack Bot With Python](https://www.fullstackpython.com/blog/build-first-slack-bot-python.html) -- Tutorial the original skeleton of this bot is based on (pre customization)
 * [Python docs: .format & comma as thousands separator](https://docs.python.org/3/library/string.html#format-specification-mini-language)
+* [Python virtual environments: virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/#virtualenv) - *"virtualenv is a tool to create isolated Python environments"*
 
 ### Pushing Updates to Heroku
 
-Need to be a *Collaborator* in the Heroku app config.
-
-Download the [Heroku Toolbelt](https://toolbelt.heroku.com/)
+* You must added as a *Collaborator* in the Heroku app config to push updates to the app. 
+* Download and install the [Heroku Toolbelt](https://toolbelt.heroku.com/).
 
 Login to Heroku:  
 `$ heroku login`
@@ -22,7 +26,13 @@ Add the application ([Creating a Heroku remote](https://devcenter.heroku.com/art
 Deploy code:  
 `$ git push heroku master`
 
-Start the dyno again after a `git push heroku master` update to Heroku:  
+#### Troubleshooting
+
+If `@pybot` shows offline after pushing to Heroku, there is probably an error in the Python code. Check the Heroku logs: `$ heroku logs`
+
+___
+
+Sometimes after deploying code, the dyno may stop. Start the dyno again after a `git push heroku master` update to Heroku:  
 
 ```
 $ heroku ps
@@ -31,7 +41,6 @@ For more information on dyno sleeping and how to upgrade, see:
 https://devcenter.heroku.com/articles/dyno-sleeping
 
 No dynos on ⬢ pybot-cupway
-(venv) 
 ```
 
 That indicates no dyno running. Let's start it:
@@ -50,6 +59,7 @@ https://devcenter.heroku.com/articles/dyno-sleeping
 === worker (Free): python pybot.py (1)
 worker.1: up 2016/06/18 23:16:17 -0600 (~ 3s ago)
 ```
+___
 
 Display running Heroku processes:  
 `$ heroku ps`
@@ -57,13 +67,15 @@ Display running Heroku processes:
 Check Heroku logs (get last 50 lines):  
 `$ heroku logs -n 50`
 
-### Configuration Notes
+### Heroku Configuration Notes
 
 In [Heroku Settings](https://dashboard.heroku.com/apps/pybot-cupway/settings), `SLACK_BOT_TOKEN` has to be set as a configuration variable:
 
 ![SLACK_BOT_TOKEN config](images/config_vars.jpg)
 
-`requirements.txt` referencing the Python `slackclient` module is needed.
+___
+
+A [`requirements.txt`](https://github.com/cupway/pybot-cupway/blob/master/requirements.txt) file must be in the repo, and it has to reference the Python `slackclient` module.
 
 
 ### Local Dev (Non Heroku)
@@ -74,7 +86,12 @@ Set environment variables:
 `$ export SLACK_BOT_TOKEN="put generated token here"`
 
 
-If using a virtualenv for local Python dev, activate it:  
+If using a virtualenv for local Python dev
+
+Install the slack client in the virtualenv:  
+`$ pip install slackclient`
+
+Activate the virtualenv for development:  
 `$ source bin/activate`
 
 
