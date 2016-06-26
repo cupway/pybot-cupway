@@ -54,6 +54,7 @@ def handle_command(command, channel):
     if command.startswith(EXAMPLE_COMMAND):
         response = "Sure .. write some code and I can do that."
     if command.startswith(VIDCARD_COMMAND):
+        print(command)
         command_dollar_amount = command.split(" ")[1]
         try:
             command_dollar_amount = int(command_dollar_amount)
