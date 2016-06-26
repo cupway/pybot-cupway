@@ -2,11 +2,11 @@
 Based on guide posted at:
 https://www.fullstackpython.com/blog/build-first-slack-bot-python.html
 """
+from __future__ import division # force decimal divison by default
 
 import os
 import sys
 import time
-from __future__ import division # force decimal divison by default
 
 try:
     from slackclient import SlackClient
