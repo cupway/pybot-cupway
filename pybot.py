@@ -36,6 +36,7 @@ AT_BOT = "<@" + BOT_ID + ">:"
 EXAMPLE_COMMAND = "do"
 VIDCARD_COMMAND = "vidcard"
 HELP_COMMAND = "help"
+ABOUT_COMMAND = "aboutyou"
 
 slack_client = SlackClient(SLACK_BOT_TOKEN)
 
@@ -48,22 +49,29 @@ def vidcard_calc(dollar_amount):
 def help_menu(help_term=None):
     """
     :param help_term: A dictionary of commands and their explanation. Defaults to None if help_menu called without arguments
-    :return: help term or terms
+    :return: output
     """
 
     # Dictionary of help items. Keys are the command, value is the explanation
     help_items = {
-        "vidcard" : "Type @pybot vidcard {dollar amount} - returns the number of video cards you could buy for that dollar amount"
+        "aboutyou": "Type `@pybot: aboutyou` --> returns information about me.",
+        "vidcard": "Type `@pybot: vidcard {dollar amount here}` --> returns the number of video cards you could buy for that dollar amount."
     }
 
     output = ""
 
     # just get the explanation for one command
     if help_term in help_items:
+        output += "Here is help on that command:\n"
         output = help_items[help_term]
+
+    # if `@pybot: help foo` and foo is unknown
+    if help_term not in help_items:
+        output += "Hmm, I don't know that command. Type `@pybot: help` for help on all my commands."
 
     # if user doesn't pass a specific term list all the help
     elif help_term == None:
+        output += "Here is help for all my commands:\n"
         for i in help_items.values():
             output += "{0}\n".format(i)
     return output
@@ -95,6 +103,14 @@ def handle_command(command, channel):
         if len(help_string_list) == 2:
             response = help_menu(help_string_list[1])
 
+
+    # Define the @pybot: aboutyou command
+    if command.startswith(ABOUT_COMMAND):
+        response = """
+        I'm a Python bot. My code is here: https://github.com/cupway/pybot-cupway\n
+        I'm hosted on Heroku. Contributions, pull requests and feature requests welcome.\n
+        Contact @scottae or @ericdorsey for additional details.
+        """
 
     if command.startswith(VIDCARD_COMMAND):
         print(command) # only shows up in logging, $ heroku log -n 50
