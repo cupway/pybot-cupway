@@ -1,9 +1,6 @@
 # OSX
 .DS_Store
 
-# Token directory
-token/token.py
-
 # Vim
 *.swp
 *.swo

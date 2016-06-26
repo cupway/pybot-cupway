@@ -28,6 +28,11 @@ Deploy code:
 
 #### Troubleshooting
 
+After pushing, ensure `@pybot` is still *green* in the DMs list (he's online 24/7):  
+![foo](images/pybot_green.jpg)
+
+___
+
 If `@pybot` shows offline after pushing to Heroku, there is probably an error in the Python code. Check the Heroku logs: `$ heroku logs`
 
 ___
