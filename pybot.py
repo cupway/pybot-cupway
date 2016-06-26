@@ -78,10 +78,9 @@ def handle_command(command, channel):
     :param channel:
     :return:
     """
-    response = """
-        I don't understand that command. If this is an issue / error, please track it.\n
-        https://github.com/cupway/pybot-cupway/issues\n
-        For help, type `@pybot: help`
+    response = """I don't understand that command. If this is an issue / error, please track it.
+    https://github.com/cupway/pybot-cupway/issues
+    For help, type `@pybot: help`
     """
 
     if command.startswith(EXAMPLE_COMMAND):
