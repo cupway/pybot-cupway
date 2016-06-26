@@ -74,6 +74,7 @@ def handle_command(command, channel):
             # if it's not an even float, limit decimals to 2 places
             if (vidcard_number % 2 == 0) == False:
                 vidcard_number = round(vidcard_number, 2)
+                vidcard_number = "{:,}".format(vidcard_number)
             if vidcard_number < 1:
                 response = "That's not even one video card ;("
             else:
