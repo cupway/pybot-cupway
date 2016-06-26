@@ -4,7 +4,8 @@
 
 * [Heroku: Configuration and Config Vars](https://devcenter.heroku.com/articles/config-vars#setting-up-config-vars-for-a-deployed-application)
 * [Slack API](https://api.slack.com/)
-* [How to Build Your First Slack Bot With Python](https://www.fullstackpython.com/blog/build-first-slack-bot-python.html) -- Tutorial this bot is based on
+* [How to Build Your First Slack Bot With Python](https://www.fullstackpython.com/blog/build-first-slack-bot-python.html) -- Tutorial the original skeleton of this bot is based on (pre customization)
+* [Python docs: .format & comma as thousands separator](https://docs.python.org/3/library/string.html#format-specification-mini-language)
 
 ### Pushing Updates to Heroku
 
