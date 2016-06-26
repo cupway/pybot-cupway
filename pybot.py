@@ -35,13 +35,38 @@ AT_BOT = "<@" + BOT_ID + ">:"
 
 EXAMPLE_COMMAND = "do"
 VIDCARD_COMMAND = "vidcard"
+HELP_COMMAND = "help"
 
 slack_client = SlackClient(SLACK_BOT_TOKEN)
 
 
 def vidcard_calc(dollar_amount):
-    num_vid_cards = dollar_amount / 300
+    one_vidcard_value = 300
+    num_vid_cards = dollar_amount / one_vidcard_value
     return num_vid_cards
+
+def help_menu(help_term=None):
+    """
+    :param help_term: A dictionary of commands and their explanation. Defaults to None if help_menu called without arguments
+    :return: help term or terms
+    """
+
+    # Dictionary of help items. Keys are the command, value is the explanation
+    help_items = {
+        "vidcard" : "Type @pybot vidcard {dollar amount} - returns the number of video cards you could buy for that dollar amount"
+    }
+
+    output = ""
+
+    # just get the explanation for one command
+    if help_term in help_items:
+        output = help_items[help_term]
+
+    # if user doesn't pass a specific term list all the help
+    elif help_term == None:
+        for i in help_items.values():
+            output += "{0}\n".format(i)
+    return output
 
 
 def handle_command(command, channel):
@@ -57,6 +82,19 @@ def handle_command(command, channel):
 
     if command.startswith(EXAMPLE_COMMAND):
         response = "Sure .. write some code and I can do that."
+
+
+    # Define the @pybot: help command
+    if command.startswith(HELP_COMMAND):
+        # break the command sent to @pybot into a list
+        help_string_list = command.split(" ")
+        # user called just @pybot: help
+        if len(help_string_list) == 1:
+            response = help_menu()
+        # user called @pybot: help {command}
+        if len(help_string_list) == 2:
+            response = help_menu(help_string_list[1])
+
 
     if command.startswith(VIDCARD_COMMAND):
         print(command) # only shows up in logging, $ heroku log -n 50
@@ -84,12 +122,8 @@ def handle_command(command, channel):
         except ValueError:
             response = "You need to give me a number!"
 
-    # if command.startswith("leave"):
-    #     #response = "Channel is {0}. Your command was: {1}".format(channel, command)
-    #     channel_to_leave = command.split(" ")[1]
-    #     data_about_channel = slack_client.api_call("channels.info", channel=channel_to_leave)
-    #     response = "Command: {0}. Channel: {1}. Data about channel: {2}".format(command, channel_to_leave, data_about_channel)
-    #     #slack_client.api_call("channels.leave", channel=channel)
+
+    # Always send the response we built above:
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
