@@ -6,6 +6,8 @@ https://www.fullstackpython.com/blog/build-first-slack-bot-python.html
 import os
 import sys
 import time
+from __future__ import division # force decimal divison by default
+
 try:
     from slackclient import SlackClient
 except ImportError as err:
@@ -29,8 +31,15 @@ BOT_ID = "U1J60L0F2"
 
 AT_BOT = "<@" + BOT_ID + ">:"
 EXAMPLE_COMMAND = "do"
+VIDCARD_COMMAND = "vidcard"
 
 slack_client = SlackClient(SLACK_BOT_TOKEN)
+
+
+def vidcard_calc(dollar_amount):
+    num_vid_cards = dollar_amount / 300
+    return num_vid_cards
+
 
 def handle_command(command, channel):
     """
@@ -44,12 +53,24 @@ def handle_command(command, channel):
         "* command with numbers, delimited by spaces."
     if command.startswith(EXAMPLE_COMMAND):
         response = "Sure .. write some code and I can do that."
-    if command.startswith("leave"):
-        #response = "Channel is {0}. Your command was: {1}".format(channel, command)
-        channel_to_leave = command.split(" ")[1]
-        data_about_channel = slack_client.api_call("channels.info", channel=channel_to_leave)
-        response = "Command: {0}. Channel: {1}. Data about channel: {2}".format(command, channel_to_leave, data_about_channel)
-        #slack_client.api_call("channels.leave", channel=channel)
+    if command.startswith(VIDCARD_COMMAND):
+        command_dollar_amount = command.split(" ")[1]
+        try:
+            command_dollar_amount = int(command_dollar_amount)
+            vidcard_number = vidcard_calc(command_dollar_amount)
+            if vidcard_number < 1:
+                response = "That's not even one video card ;("
+            else:
+                response = "That's {0} video cards!"
+        except ValueError:
+            response = "You need to give me a number!"
+
+    # if command.startswith("leave"):
+    #     #response = "Channel is {0}. Your command was: {1}".format(channel, command)
+    #     channel_to_leave = command.split(" ")[1]
+    #     data_about_channel = slack_client.api_call("channels.info", channel=channel_to_leave)
+    #     response = "Command: {0}. Channel: {1}. Data about channel: {2}".format(command, channel_to_leave, data_about_channel)
+    #     #slack_client.api_call("channels.leave", channel=channel)
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
