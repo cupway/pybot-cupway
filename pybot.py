@@ -13,11 +13,8 @@ import time
 try:
     from slackclient import SlackClient
 except ImportError as err:
-    print("")
     print(err)
-    print("")
-    print("Did you forget to `$ pip install slackclient`? Quitting.")
-    print("")
+    print("\nDid you forget to `$ pip install slackclient`? Quitting.")
     sys.exit(1)
 
 # Assign the token via environment variable (Heroku `config vars`)
