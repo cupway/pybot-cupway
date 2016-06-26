@@ -137,7 +137,7 @@ def handle_command(command, channel):
 
     # Always send the response we built above:
     slack_client.api_call("chat.postMessage", channel=channel,
-                          text=response, as_user=True, unfurl_links=False, unfurl_media=False)
+                          text=response, as_user=True, unfurl_links=False, unfurl_media=True)
 
 
 def parse_slack_output(slack_rtm_output):
