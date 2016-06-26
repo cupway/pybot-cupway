@@ -2,7 +2,9 @@
 Based on guide posted at:
 https://www.fullstackpython.com/blog/build-first-slack-bot-python.html
 """
-from __future__ import division # force decimal divison by default
+
+# force decimal divison by default
+from __future__ import division
 
 import os
 import sys
@@ -18,7 +20,7 @@ except ImportError as err:
     print("")
     sys.exit(1)
 
-# Assign the token via environment variable
+# Assign the token via environment variable (Heroku `config vars`)
 try:
     SLACK_BOT_TOKEN = os.environ["SLACK_BOT_TOKEN"]
 except KeyError:
@@ -69,6 +71,9 @@ def handle_command(command, channel):
             # if it's an even number, example 20.0, strip off the decimal
             if vidcard_number % 2 == 0:
                 vidcard_number = int(vidcard_number)
+            # if it's not an even float, limit decimals to 2 places
+            if (vidcard_number % 2 == 0) == False:
+                vidcard_number = round(vidcard_number, 2)
             if vidcard_number < 1:
                 response = "That's not even one video card ;("
             else:
