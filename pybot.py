@@ -62,7 +62,7 @@ def handle_command(command, channel):
             if vidcard_number < 1:
                 response = "That's not even one video card ;("
             else:
-                response = "That's {0} video cards!"
+                response = "That's {0} video cards!".format(vidcard_number)
         except ValueError:
             response = "You need to give me a number!"
 
