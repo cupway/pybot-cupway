@@ -9,6 +9,7 @@ from __future__ import division
 import os
 import sys
 import time
+import requests
 
 try:
     from slackclient import SlackClient
@@ -34,6 +35,7 @@ EXAMPLE_COMMAND = "do"
 VIDCARD_COMMAND = "vidcard"
 HELP_COMMAND = "help"
 ABOUT_COMMAND = "aboutyou"
+GAME_OF_THRONES = "gotme"
 
 slack_client = SlackClient(SLACK_BOT_TOKEN)
 
@@ -107,6 +109,19 @@ def handle_command(command, channel):
         Contact @scottae or @ericdorsey for additional details.
         """
 
+
+    # Define the @pybot: gotme command
+    if command.startswith(GAME_OF_THRONES):
+        r = requests.get("https://got-quotes.herokuapp.com/quotes")
+        if r.status_code == 200:
+            r.json()
+            response = "{0} -{1}".format(r["quote"], r["character"])
+        else:
+            response = """
+            Could not send GET request to `https://got-quotes.herokuapp.com/quotes`
+            GET status code was : {0}""".format(r.status_code)
+
+
     if command.startswith(VIDCARD_COMMAND):
         print(command) # only shows up in logging, $ heroku log -n 50
         command_dollar_amount = command.split(" ")[1]
@@ -135,7 +150,6 @@ def handle_command(command, channel):
 
 
     # Always send the response we built above:
-    # unfurl
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True, unfurl_links=False, unfurl_media=True)
 
