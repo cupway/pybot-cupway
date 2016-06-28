@@ -114,7 +114,7 @@ def handle_command(command, channel):
     if command.startswith(GAME_OF_THRONES):
         r = requests.get("https://got-quotes.herokuapp.com/quotes")
         if r.status_code == 200:
-            r.json()
+            r = r.json()
             response = "{0} -{1}".format(r["quote"], r["character"])
         else:
             response = """
