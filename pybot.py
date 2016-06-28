@@ -31,6 +31,7 @@ BOT_ID = "U1J60L0F2"
 
 AT_BOT = "<@" + BOT_ID + ">:"
 
+# Commands
 EXAMPLE_COMMAND = "do"
 VIDCARD_COMMAND = "vidcard"
 HELP_COMMAND = "help"
@@ -54,7 +55,8 @@ def help_menu(help_term=None):
     # Dictionary of help items. Keys are the command, value is the explanation
     help_items = {
         "aboutyou": "Type `@pybot: aboutyou` --> returns information about me.",
-        "vidcard": "Type `@pybot: vidcard {dollar amount here}` --> returns the number of video cards you could buy for that dollar amount."
+        "vidcard": "Type `@pybot: vidcard {dollar amount}` --> returns the number of video cards you could buy for that dollar amount.",
+        "gotme": "Type `@pybot: gotme` (alt: `got me`) --> returns a Game of Thrones quote from `https://got-quotes.herokuapp.com/quotes` API"
     }
 
     output = ""
@@ -104,14 +106,13 @@ def handle_command(command, channel):
     # Define the @pybot: aboutyou command
     if command.startswith(ABOUT_COMMAND):
         response = """
-        I'm a Python bot. My code is here: https://github.com/cupway/pybot-cupway\n
-        I'm hosted on Heroku. Contributions, pull requests and feature requests welcome.\n
+        I'm a Python bot. My code is here: https://github.com/cupway/pybot-cupway
+        I'm hosted on Heroku. Contributions, pull requests and feature requests welcome.
         Contact @scottae or @ericdorsey for additional details.
         """
 
 
     # Define the @pybot: gotme command
-    #if command.startswith(GAME_OF_THRONES[0]) or command.startswith(GAME_OF_THRONES[1]):
     for i in GAME_OF_THRONES:
         if i in command:
             r = requests.get("https://got-quotes.herokuapp.com/quotes")
@@ -126,7 +127,7 @@ def handle_command(command, channel):
             else:
                 response = """
                 Could not send GET request to `https://got-quotes.herokuapp.com/quotes`
-                GET status code was : {0}""".format(r.status_code)
+                GET status code was: {0}""".format(r.status_code)
 
 
     if command.startswith(VIDCARD_COMMAND):
