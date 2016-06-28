@@ -117,7 +117,10 @@ def handle_command(command, channel):
             r = r.json()
             r["quote"] = r["quote"].encode("ascii", "ignore")
             r["character"] = r["character"].encode("ascii", "ignore")
-            response = "{0} -{1}".format(r["quote"], r["character"])
+            try:
+                response = "{0} -{1}".format(r["quote"], r["character"])
+            except UnicodeError as uni_error:
+                response = "Oh no! I had a Unicode error: {0}".format(uni_error)
         else:
             response = """
             Could not send GET request to `https://got-quotes.herokuapp.com/quotes`
