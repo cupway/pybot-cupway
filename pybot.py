@@ -37,6 +37,7 @@ VIDCARD_COMMAND = "vidcard"
 HELP_COMMAND = "help"
 ABOUT_COMMAND = "aboutyou"
 GAME_OF_THRONES = ["gotme", "got me"]
+KING_IN_THE_NORTH = "king"
 
 slack_client = SlackClient(SLACK_BOT_TOKEN)
 
@@ -128,6 +129,11 @@ def handle_command(command, channel):
                 response = """
                 Could not send GET request to `https://got-quotes.herokuapp.com/quotes`
                 GET status code was: {0}""".format(r.status_code)
+
+
+    # Define @pybot: king command
+    if command.startswith(KING_IN_THE_NORTH):
+        response = "*DAKINGINDANORF!!* :rpluslequalsj: *DAKINGINDANORFF!!*"
 
 
     if command.startswith(VIDCARD_COMMAND):
