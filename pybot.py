@@ -115,6 +115,8 @@ def handle_command(command, channel):
         r = requests.get("https://got-quotes.herokuapp.com/quotes")
         if r.status_code == 200:
             r = r.json()
+            r["quote"] = r["quote"].encode("ascii", "ignore")
+            r["character"] = r["character"].encode("ascii", "ignore")
             response = "{0} -{1}".format(r["quote"], r["character"])
         else:
             response = """
