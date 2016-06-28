@@ -35,7 +35,7 @@ EXAMPLE_COMMAND = "do"
 VIDCARD_COMMAND = "vidcard"
 HELP_COMMAND = "help"
 ABOUT_COMMAND = "aboutyou"
-GAME_OF_THRONES = "gotme"
+GAME_OF_THRONES = ["gotme", "got me"]
 
 slack_client = SlackClient(SLACK_BOT_TOKEN)
 
@@ -111,20 +111,22 @@ def handle_command(command, channel):
 
 
     # Define the @pybot: gotme command
-    if command.startswith(GAME_OF_THRONES):
-        r = requests.get("https://got-quotes.herokuapp.com/quotes")
-        if r.status_code == 200:
-            r = r.json()
-            r["quote"] = r["quote"].encode("ascii", "ignore")
-            r["character"] = r["character"].encode("ascii", "ignore")
-            try:
-                response = "{0} -{1}".format(r["quote"], r["character"])
-            except UnicodeError as uni_error:
-                response = "Oh no! I had a Unicode error: {0}".format(uni_error)
-        else:
-            response = """
-            Could not send GET request to `https://got-quotes.herokuapp.com/quotes`
-            GET status code was : {0}""".format(r.status_code)
+    #if command.startswith(GAME_OF_THRONES[0]) or command.startswith(GAME_OF_THRONES[1]):
+    for i in GAME_OF_THRONES:
+        if i in command:
+            r = requests.get("https://got-quotes.herokuapp.com/quotes")
+            if r.status_code == 200:
+                r = r.json()
+                r["quote"] = r["quote"].encode("ascii", "ignore")
+                r["character"] = r["character"].encode("ascii", "ignore")
+                try:
+                    response = "{0} -{1}".format(r["quote"], r["character"])
+                except UnicodeError as uni_error:
+                    response = "Oh no! I had a Unicode error: {0}".format(uni_error)
+            else:
+                response = """
+                Could not send GET request to `https://got-quotes.herokuapp.com/quotes`
+                GET status code was : {0}""".format(r.status_code)
 
 
     if command.startswith(VIDCARD_COMMAND):
