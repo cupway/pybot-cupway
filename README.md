@@ -75,6 +75,19 @@ Check Heroku logs (get last 50 lines):
 
 ### Heroku Configuration Notes
 
+If you use a new Python library, we have to add it to `requirements.txt` 
+
+Verify the version locally first, so we know what to add to `requirements.txt`:  
+
+```
+$ pip freeze
+requests==2.10.0
+six==1.10.0
+slackclient==1.0.0
+websocket-client==0.37.0
+```
+___
+
 In [Heroku Settings](https://dashboard.heroku.com/apps/pybot-cupway/settings), `SLACK_BOT_TOKEN` has to be set as a configuration variable:
 
 ![SLACK_BOT_TOKEN config](images/config_vars.jpg)
