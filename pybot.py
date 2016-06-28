@@ -55,9 +55,10 @@ def help_menu(help_term=None):
 
     # Dictionary of help items. Keys are the command, value is the explanation
     help_items = {
-        "aboutyou": "Type `@pybot: aboutyou` --> returns information about me.",
+        "aboutyou": "Type `@pybot: aboutyou` --> returns information about @pybot",
         "vidcard": "Type `@pybot: vidcard {dollar amount}` --> returns the number of video cards you could buy for that dollar amount.",
-        "gotme": "Type `@pybot: gotme` (alt: `got me`) --> returns a Game of Thrones quote from `https://got-quotes.herokuapp.com/quotes` API"
+        "gotme": "Type `@pybot: gotme` (alt: `got me`) --> returns a Game of Thrones quote from `https://got-quotes.herokuapp.com/quotes` API",
+        "king": "Type `@pybot: king` --> returns useful information about the King in the North"
     }
 
     output = ""
