@@ -192,7 +192,7 @@ def parse_slack_output(slack_rtm_output):
                 # return text after @ mention, whitespace removed
                 return output["text"].split(AT_BOT)[1].strip().lower(), \
                     output["channel"]
-    return None
+    return None, None
 
 
 if __name__ == "__main__":
