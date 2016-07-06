@@ -10,6 +10,7 @@ import os
 import sys
 import time
 import requests
+import signal
 
 try:
     from slackclient import SlackClient
@@ -40,6 +41,13 @@ GAME_OF_THRONES = ["gotme", "got me"]
 KING_IN_THE_NORTH = "king"
 
 slack_client = SlackClient(SLACK_BOT_TOKEN)
+
+
+def signal_term_handler(signal, frame):
+    print("Received SIGTERM. Exiting..")
+    sys.exit(0)
+
+signal.signal(signal.SIGTERM, signal_term_handler)
 
 
 def vidcard_calc(dollar_amount):
@@ -184,7 +192,7 @@ def parse_slack_output(slack_rtm_output):
                 # return text after @ mention, whitespace removed
                 return output["text"].split(AT_BOT)[1].strip().lower(), \
                     output["channel"]
-    return None, None
+    return None
 
 
 if __name__ == "__main__":

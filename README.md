@@ -13,6 +13,7 @@ A Python bot for a [Slack](https://slack.com/) group. It uses the [Python slack 
 * [Python virtual environments: virtualenv](http://docs.python-guide.org/en/latest/dev/virtualenvs/#virtualenv) - *"virtualenv is a tool to create isolated Python environments"*
 * [Slack API: unfurling (previews)](https://api.slack.com/docs/message-attachments#unfurling)
 * [Game of Thrones quotes API](https://github.com/wsizoo/game-of-thrones-quotes)
+  * [GoT Quotes storage `.rb` file](https://github.com/wsizoo/game-of-thrones-quotes/blob/master/db/seeds.rb)
 
 ### Pushing Updates to Heroku
 
