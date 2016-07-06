@@ -1,9 +1,4 @@
-"""
-Based on guide posted at:
-https://www.fullstackpython.com/blog/build-first-slack-bot-python.html
-"""
-
-# force decimal divison by default
+# Force decimal divison by default
 from __future__ import division
 
 import os
@@ -44,9 +39,22 @@ slack_client = SlackClient(SLACK_BOT_TOKEN)
 
 
 def signal_term_handler(signal, frame):
-    print("Received SIGTERM. Exiting..")
-    sys.exit(0)
+    """
+    Monitors for a SIGTERM; Heroku restarts Dynos approx once every 24 hrs
+    :param signal: signal number - usually 15 for SIGTERM
+    :param frame: current stack frame
+    :return: N/A
+    """
+    if signal == 15:
+        print("*** SIGTERM received. Exiting gracefully ..")
+        # SIGTERM signals are normal / expected when Heroku Dyno restarts
+        sys.exit(0)
+    else:
+        print("*** signal received: {0}").format(signal)
+        # Exit "other than normal"
+        sys.exit(1)
 
+# Monitor for SIGTERM signal
 signal.signal(signal.SIGTERM, signal_term_handler)
 
 
