@@ -81,12 +81,10 @@ def help_menu(help_term=None):
 
     # just get the explanation for one command
     if help_term in help_items:
-        output += "Here is help on that command:\n"
         output = help_items[help_term]
 
     # if user doesn't pass a specific term list all the help
     elif help_term == None:
-        output += "Here is help for all my commands:\n"
         for i in help_items.values():
             output += "{0}\n".format(i)
     return output
@@ -96,14 +94,13 @@ def handle_command(command, channel):
     """
     Receives commands directed at bot & determines if valid.
 
-    :param command:
+    :param command: command passed by user
     :param channel:
-    :return:
+    :return: N/A
     """
-    response = """I don't understand that command. If this is an issue / error, please track it.
-    https://github.com/cupway/pybot-cupway/issues
-    For help, type `@pybot: help`
-    """
+    response = "I don't understand that command. If this is an issue / error, please track it:\
+    \nhttps://github.com/cupway/pybot-cupway/issues\
+    \nFor help, type `@pybot: help`"
 
     if command.startswith(EXAMPLE_COMMAND):
         response = "Sure .. write some code and I can do that."
