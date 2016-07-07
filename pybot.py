@@ -117,11 +117,8 @@ def handle_command(command, channel):
 
     # Define the @pybot: aboutyou command
     if command.startswith(ABOUT_COMMAND):
-        response = """
-        I'm a Python bot. My code is here: https://github.com/cupway/pybot-cupway
-        I'm hosted on Heroku. Contributions, pull requests and feature requests welcome.
-        Contact @scottae or @ericdorsey for additional details.
-        """
+        response = "I'm a Python bot. My code is here: https://github.com/cupway/pybot-cupway\
+        \nI'm hosted on Heroku. Contributions, pull requests and feature requests welcome."
 
 
     # Define the @pybot: gotme command
