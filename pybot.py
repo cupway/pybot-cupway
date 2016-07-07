@@ -18,9 +18,7 @@ except ImportError as err:
 try:
     SLACK_BOT_TOKEN = os.environ["SLACK_BOT_TOKEN"]
 except KeyError:
-    print("")
-    print("Is SLACK_BOT_TOKEN configured in Heroku app Settings w/ a valid Slack token?")
-    print("")
+    print("\nIs SLACK_BOT_TOKEN configured in Heroku app Settings w/ a valid Slack token?")
 
 # Use the BOT_ID gathered from get_pybot_id.py
 BOT_ID = "U1J60L0F2"
@@ -50,9 +48,8 @@ def signal_term_handler(signal, frame):
         # SIGTERM signals are normal / expected when Heroku Dyno restarts
         sys.exit(0)
     else:
+        # signal other than SIGTERM received
         print("*** signal received: {0}").format(signal)
-        # Exit "other than normal"
-        sys.exit(1)
 
 # Monitor for SIGTERM signal
 signal.signal(signal.SIGTERM, signal_term_handler)
