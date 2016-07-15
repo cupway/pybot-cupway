@@ -77,7 +77,8 @@ def help_menu(help_term=None):
     output = ""
 
     # just get the explanation for one command
-    if help_term in help_items:
+    if help_term != None and help_term in help_items:
+        help_term = help_term.strip()
         output = help_items[help_term]
 
     # if user doesn't pass a specific term list all the help
@@ -113,6 +114,10 @@ def handle_command(command, channel):
         # user called @pybot: help {command}
         if len(help_string_list) == 2:
             response = help_menu(help_string_list[1])
+        # user passes more than one term, default to plain @pybot: help
+        if len(help_string_list) > 2:
+            response = help_menu()
+
 
 
     # Define the @pybot: aboutyou command
