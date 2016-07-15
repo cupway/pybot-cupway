@@ -31,8 +31,15 @@ HELP_COMMAND = "help"
 ABOUT_COMMAND = "aboutyou"
 GAME_OF_THRONES = ["gotme", "got me"]
 KING_IN_THE_NORTH = "king"
+CHANNEL_INFO = "chaninfo"
+
 
 slack_client = SlackClient(SLACK_BOT_TOKEN)
+
+
+def get_id_from_room_name():
+    channel_info = slack_client.api_call("channels.list", exclude_archived=True)
+    return channel_info
 
 
 def signal_term_handler(signal, frame):
@@ -70,7 +77,8 @@ def help_menu(help_term=None):
         "aboutyou": "Type `@pybot: aboutyou` --> returns information about @pybot",
         "vidcard": "Type `@pybot: vidcard {dollar amount}` --> returns the number of video cards you could buy for that dollar amount.",
         "gotme": "Type `@pybot: gotme` (alt: `got me`) --> returns a Game of Thrones quote from `https://got-quotes.herokuapp.com/quotes` API",
-        "king": "Type `@pybot: king` --> returns useful information about the King in the North"
+        "king": "Type `@pybot: king` --> returns useful information about the King in the North",
+        "chaninfo": "Type `@pybot: chaninfo` --> returns channel information"
     }
 
     output = ""
@@ -101,6 +109,9 @@ def handle_command(command, channel):
     \nhttps://github.com/cupway/pybot-cupway/issues\
     \nFor help, type `@pybot: help`"
 
+    # Define the @pybot: chaninfo comamnd
+    if command.startswith(CHANNEL_INFO):
+        response = get_id_from_room_name()
 
     # Define the @pybot: gotme command
     for i in GAME_OF_THRONES:
