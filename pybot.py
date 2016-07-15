@@ -26,7 +26,6 @@ BOT_ID = "U1J60L0F2"
 AT_BOT = "<@" + BOT_ID + ">:"
 
 # Commands
-EXAMPLE_COMMAND = "do"
 VIDCARD_COMMAND = "vidcard"
 HELP_COMMAND = "help"
 ABOUT_COMMAND = "aboutyou"
@@ -96,12 +95,29 @@ def handle_command(command, channel):
     :param channel:
     :return: N/A
     """
+
+    # Default response
     response = "I don't understand that command. If this is an issue / error, please track it:\
     \nhttps://github.com/cupway/pybot-cupway/issues\
     \nFor help, type `@pybot: help`"
 
-    if command.startswith(EXAMPLE_COMMAND):
-        response = "Sure .. write some code and I can do that."
+
+    # Define the @pybot: gotme command
+    for i in GAME_OF_THRONES:
+        if i in command:
+            r = requests.get("https://got-quotes.herokuapp.com/quotes")
+            if r.status_code == 200:
+                r = r.json()
+                r["quote"] = r["quote"].encode("ascii", "ignore")
+                r["character"] = r["character"].encode("ascii", "ignore")
+                try:
+                    response = "{0} -{1}".format(r["quote"], r["character"])
+                except UnicodeError as uni_error:
+                    response = "Oh no! I had a Unicode error: {0}".format(uni_error)
+            else:
+                response = """
+                Could not send GET request to `https://got-quotes.herokuapp.com/quotes`
+                GET status code was: {0}""".format(r.status_code)
 
 
     # Define the @pybot: help command
@@ -126,22 +142,6 @@ def handle_command(command, channel):
         \nI'm hosted on Heroku. Contributions, pull requests and feature requests welcome."
 
 
-    # Define the @pybot: gotme command
-    for i in GAME_OF_THRONES:
-        if i in command:
-            r = requests.get("https://got-quotes.herokuapp.com/quotes")
-            if r.status_code == 200:
-                r = r.json()
-                r["quote"] = r["quote"].encode("ascii", "ignore")
-                r["character"] = r["character"].encode("ascii", "ignore")
-                try:
-                    response = "{0} -{1}".format(r["quote"], r["character"])
-                except UnicodeError as uni_error:
-                    response = "Oh no! I had a Unicode error: {0}".format(uni_error)
-            else:
-                response = """
-                Could not send GET request to `https://got-quotes.herokuapp.com/quotes`
-                GET status code was: {0}""".format(r.status_code)
 
 
     # Define @pybot: king command
