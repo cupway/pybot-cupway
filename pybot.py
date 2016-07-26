@@ -117,7 +117,7 @@ def handle_command(command, channel):
 
     # Define the @pybot: gibberish command
     for i in GIBBERISH:
-        if i in comamnd:
+        if i in command:
             r = requests.get("http://www.randomtext.me/api/gibberish/p-1/5-12")
             if r.status_code == 200:
                 r = r.json()
