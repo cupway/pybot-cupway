@@ -6,6 +6,7 @@ import sys
 import time
 import requests
 import signal
+import re
 
 try:
     from slackclient import SlackClient
@@ -32,7 +33,7 @@ ABOUT_COMMAND = "aboutyou"
 GAME_OF_THRONES = ["gotme", "got me"]
 KING_IN_THE_NORTH = "king"
 CHANNEL_INFO = "chaninfo"
-
+GIBBERISH = ["gibberish", "nonsense"]
 
 slack_client = SlackClient(SLACK_BOT_TOKEN)
 
@@ -78,7 +79,8 @@ def help_menu(help_term=None):
         "vidcard": "Type `@pybot: vidcard {dollar amount}` --> returns the number of video cards you could buy for that dollar amount.",
         "gotme": "Type `@pybot: gotme` (alt: `got me`) --> returns a Game of Thrones quote from `https://got-quotes.herokuapp.com/quotes` API",
         "king": "Type `@pybot: king` --> returns useful information about the King in the North",
-        "chaninfo": "Type `@pybot: chaninfo` --> returns channel information"
+        "chaninfo": "Type `@pybot: chaninfo` --> returns channel information",
+        "gibberish": "Type `@pybot: gibberish` (alt: `nonsense`) --> returns gibberish"
     }
 
     output = ""
@@ -90,7 +92,7 @@ def help_menu(help_term=None):
 
     # if user doesn't pass a specific term list all the help
     elif help_term == None:
-        for i in help_items.values():
+        for i in sorted(help_items.values()):
             output += "{0}\n".format(i)
     return output
 
@@ -113,6 +115,19 @@ def handle_command(command, channel):
     if command.startswith(CHANNEL_INFO):
         response = get_id_from_room_name()
 
+    # Define the @pybot: gibberish command
+    for i in GIBBERISH:
+        if i in comamnd:
+            r = requests.get("http://www.randomtext.me/api/gibberish/p-1/5-12")
+            if r.status_code == 200:
+                r = r.json()
+                response = re.sub("<.*?>", "", r["text_out"]).rstrip()
+            else:
+                response = "GET request to `http://www.randomtext.me/api/gibberish/p-1/5-12` not `200 OK`\
+                \nGET status code was: {0}".format(r.status_code)
+
+
+
     # Define the @pybot: gotme command
     for i in GAME_OF_THRONES:
         if i in command:
@@ -126,9 +141,8 @@ def handle_command(command, channel):
                 except UnicodeError as uni_error:
                     response = "Oh no! I had a Unicode error: {0}".format(uni_error)
             else:
-                response = """
-                Could not send GET request to `https://got-quotes.herokuapp.com/quotes`
-                GET status code was: {0}""".format(r.status_code)
+                response = "GET request to `https://got-quotes.herokuapp.com/quotes` not `200 OK`\
+                \nGET status code was: {0}".format(r.status_code)
 
 
     # Define the @pybot: help command
