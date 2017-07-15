@@ -26,22 +26,22 @@ BOT_ID = "U1J60L0F2"
 
 AT_BOT = "<@" + BOT_ID + ">:"
 
-# Commands
-VIDCARD_COMMAND = "vidcard"
-HELP_COMMAND = "help"
-ABOUT_COMMAND = "aboutyou"
-GAME_OF_THRONES = ["gotme", "got me"]
-KING_IN_THE_NORTH = "king"
-CHANNEL_INFO = "chaninfo"
-GIBBERISH = ["gibberish", "nonsense"]
+# All possible commands
+all_commands = {
+        "VIDCARD_COMMAND" : "vidcard",
+        "HELP_COMMAND" : "help",
+        "ABOUT_COMMAND" : "aboutyou",
+        "GAME_OF_THRONES" : ["gotme", "got me"],
+        "KING_IN_THE_NORTH" : "king",
+        "CHANNEL_INFO" : "chaninfo",
+        "GIBBERISH" : ["gibberish", "nonsense"]
+}
 
 slack_client = SlackClient(SLACK_BOT_TOKEN)
-
 
 def get_id_from_room_name():
     channel_info = slack_client.api_call("channels.list", exclude_archived=True)
     return channel_info
-
 
 def signal_term_handler(signal, frame):
     """
@@ -97,7 +97,7 @@ def help_menu(help_term=None):
     return output
 
 
-def handle_command(command, channel):
+def handle_command(command, channel, all_commands):
     """
     Receives commands directed at bot & determines if valid.
 
@@ -107,16 +107,17 @@ def handle_command(command, channel):
     """
 
     # Default response
-    response = "I don't understand that command. If this is an issue / error, please track it:\
-    \nhttps://github.com/cupway/pybot-cupway/issues\
-    \nFor help, type `@pybot: help`"
+    if command not in all_commands.values(): 
+        response = "I don't understand that command. If this is an issue / error, please track it:\
+        \nhttps://github.com/cupway/pybot-cupway/issues\
+        \nFor help, type `@pybot: help`"
 
     # Define the @pybot: chaninfo comamnd
-    if command.startswith(CHANNEL_INFO):
+    if command.startswith(all_commands["CHANNEL_INFO"]):
         response = get_id_from_room_name()
 
     # Define the @pybot: gibberish command
-    for i in GIBBERISH:
+    for i in all_commands["GIBBERISH"]:
         if i in command:
             r = requests.get("http://www.randomtext.me/api/gibberish/p-1/5-12")
             if r.status_code == 200:
@@ -126,10 +127,8 @@ def handle_command(command, channel):
                 response = "GET request to `http://www.randomtext.me/api/gibberish/p-1/5-12` not `200 OK`\
                 \nGET status code was: {0}".format(r.status_code)
 
-
-
     # Define the @pybot: gotme command
-    for i in GAME_OF_THRONES:
+    for i in all_commands["GAME_OF_THRONES"]:
         if i in command:
             r = requests.get("https://got-quotes.herokuapp.com/quotes")
             if r.status_code == 200:
@@ -144,9 +143,8 @@ def handle_command(command, channel):
                 response = "GET request to `https://got-quotes.herokuapp.com/quotes` not `200 OK`\
                 \nGET status code was: {0}".format(r.status_code)
 
-
     # Define the @pybot: help command
-    if command.startswith(HELP_COMMAND):
+    if command.startswith(all_commands["HELP_COMMAND"]):
         # break the command sent to @pybot into a list
         help_string_list = command.split(" ")
         # user called just @pybot: help
@@ -159,22 +157,17 @@ def handle_command(command, channel):
         if len(help_string_list) > 2:
             response = help_menu()
 
-
-
     # Define the @pybot: aboutyou command
-    if command.startswith(ABOUT_COMMAND):
+    if command.startswith(all_commands["ABOUT_COMMAND"]):
         response = "I'm a Python bot. My code is here: https://github.com/cupway/pybot-cupway\
         \nI'm hosted on Heroku. Contributions, pull requests and feature requests welcome."
 
-
-
-
     # Define @pybot: king command
-    if command.startswith(KING_IN_THE_NORTH):
+    if command.startswith(all_commands["KING_IN_THE_NORTH"]):
         response = "*DAKINGINDANORF!!* :rpluslequalsj: *DAKINGINDANORFF!!*"
 
-
-    if command.startswith(VIDCARD_COMMAND):
+    # Define @pybot: vidcard command
+    if command.startswith(all_commands["VIDCARD_COMMAND"]):
         print(command) # only shows up in logging, $ heroku log -n 50
         command_dollar_amount = command.split(" ")[1]
         # Get rid of preceding dollar signs if present
@@ -199,7 +192,6 @@ def handle_command(command, channel):
                 response = "That's {0} video cards!".format(vidcard_number)
         except ValueError:
             response = "You need to give me a number!"
-
 
     # Always send the response we built above:
     slack_client.api_call("chat.postMessage", channel=channel,
@@ -227,11 +219,21 @@ def parse_slack_output(slack_rtm_output):
 if __name__ == "__main__":
     READ_WEBSOCKET_DELAY = 1
     if slack_client.rtm_connect():
-        print("Pybot connected and running")
+        print("Pybot connected and running (AKA; its working)")
         while True:
-            command, channel = parse_slack_output(slack_client.rtm_read())
-            if command and channel:
-                handle_command(command, channel)
+            event_list = slack_client.rtm_read()
+            if len(event_list) > 0:
+                for event in event_list:
+                    # we only care about "message" type events
+                    if event["type"] == "message":
+                        # set to True only if message doesn't come from a bot
+                        bot_id_in_event = "bot_id" in event
+                        command = event["text"]
+                        channel = event["channel"]
+                        # Only respond if the bot didn't issue the prior event text
+                        # Need to check against actual bot_id if more bots added
+                        if command and channel and (bot_id_in_event == False):
+                            handle_command(command, channel, all_commands)
             time.sleep(READ_WEBSOCKET_DELAY)
     else:
         print("Connection failed. Invalid Slack token or bot ID?")
