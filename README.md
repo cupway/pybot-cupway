@@ -43,8 +43,8 @@ After pushing, ensure `@pybot` is still *green* in the DMs list (he's online 24/
 
 ___
 
-If `@pybot` shows offline after pushing to Heroku, there is probably an error in the Python code. Check the Heroku logs: 
-'$ heroku logs --app pybot-cupway`
+If `@pybot` shows offline after pushing to Heroku, there is probably an error in the Python code. Check the Heroku logs:
+`$ heroku logs --app pybot-cupway`
 ___
 
 Sometimes after deploying code, the dyno may stop (usually an indication of a `Traceback` error / issue w/ the Python code). 
