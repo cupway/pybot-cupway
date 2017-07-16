@@ -252,7 +252,11 @@ if __name__ == "__main__":
                     if event["type"] == "message":
                         # set to True only if message doesn't come from a bot
                         bot_id_in_event = "bot_id" in event
-                        command = event["text"]
+                        try:
+                            command = event["text"]
+                        except KeyError as key_err:
+                            print(key_err)
+                            pass
                         channel = event["channel"]
                         # public chat or direct message with bot?
                         dm_message = False
