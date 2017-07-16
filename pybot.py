@@ -254,19 +254,19 @@ if __name__ == "__main__":
                         bot_id_in_event = "bot_id" in event
                         try:
                             command = event["text"]
+                            channel = event["channel"]
+                            # public chat or direct message with bot?
+                            dm_message = False
+                            if channel.startswith("D"):
+                                dm_message = True
+                            command = parse_command(command, dm_message)
+                            # Only respond if the bot didn't issue the prior event text
+                            # Need to check against actual bot_id if more bots added
+                            if command and channel and (bot_id_in_event == False):
+                                handle_command(command, channel, all_commands)
                         except KeyError as key_err:
                             print(key_err)
                             pass
-                        channel = event["channel"]
-                        # public chat or direct message with bot?
-                        dm_message = False
-                        if channel.startswith("D"):
-                            dm_message = True
-                        command = parse_command(command, dm_message)
-                        # Only respond if the bot didn't issue the prior event text
-                        # Need to check against actual bot_id if more bots added
-                        if command and channel and (bot_id_in_event == False):
-                            handle_command(command, channel, all_commands)
             time.sleep(READ_WEBSOCKET_DELAY)
     else:
         print("Connection failed. Invalid Slack token or bot ID?")
