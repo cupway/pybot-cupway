@@ -221,15 +221,15 @@ def parse_command(command, dm_message):
     if dm_message == True:
         print("dm_message is True block hit!")
         print("****** dm message command before: {0}".format(command))
-        if command.startswith("@pybot"):
-            command = command.lstrip("@pybot ")
+        if command.startswith("<@U1J60L0F2>"):
+            command = command.lstrip("<@U1J60L0F2> ")
         print("****** dm message command after: {0}".format(command))
         return command
 
     # public chat room message and @pybot in message
-    elif (dm_message == False) and ("@pybot" in command == True):
+    elif (dm_message == False) and ("<@U1J60L0F2>" in command == True):
         print("public message and @pybot found block hit!")
-        command = command.lstrip("@pybot ")
+        command = command.lstrip("<@U1J60L0F2> ")
         return command
         
 
@@ -269,6 +269,7 @@ if __name__ == "__main__":
                         # Only respond if the bot didn't issue the prior event text
                         # Need to check against actual bot_id if more bots added
                         if command and channel and (bot_id_in_event == False):
+                            print("command before handle_command() call: {0}".format(command))
                             handle_command(command, channel, all_commands)
             time.sleep(READ_WEBSOCKET_DELAY)
     else:
