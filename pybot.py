@@ -219,8 +219,8 @@ def parse_command(command, dm_message):
     print("*" * 15)
     
 
-    if "<@U1J60L0F2>" in command:
-        pybot_in_command == True
+    #if "<@U1J60L0F2>" in command:
+    #    pybot_in_command = True
 
     if dm_message == True:
         print("dm_message is True block hit!")
