@@ -219,8 +219,9 @@ def parse_command(command, dm_message):
     print("*" * 15)
     
 
-    #if "<@U1J60L0F2>" in command:
-    #    pybot_in_command = True
+    pybot_in_command = False
+    if "<@U1J60L0F2>" in command:
+        pybot_in_command = True
 
     if dm_message == True:
         print("dm_message is True block hit!")
@@ -230,8 +231,8 @@ def parse_command(command, dm_message):
         return command
 
     # public chat room message and @pybot in message
-    #if (dm_message == False) and (pybot_in_command == True):
-    elif (dm_message == False) and ("<@U1J60L0F2>" in command == True):
+    if (dm_message == False) and (pybot_in_command == True):
+    #elif (dm_message == False) and ("<@U1J60L0F2>" in command == True):
     #elif dm_message == False:
         print("public message and @pybot found block hit!")
         command = command.lstrip("<@U1J60L0F2> ")
@@ -239,9 +240,9 @@ def parse_command(command, dm_message):
         return command
 
     else:
+        print("\n")
         print("*" * 15)
         print("Else block hit -- this shouldn't happen")
-        print("*" * 15)
         return None
         
 if __name__ == "__main__":
