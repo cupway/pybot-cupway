@@ -241,8 +241,7 @@ if __name__ == "__main__":
             if len(event_list) > 0:
                 for event in event_list:
                     # we only care about "message" type events
-                    print("*" * 15)
-                    print(event)
+                    print("\nEvent was:\n{0}".format(event))
                     if event["type"] == "message":
                         # set to True only if message doesn't come from a bot
                         bot_id_in_event = "bot_id" in event
