@@ -210,10 +210,11 @@ def parse_command(command, dm_message):
     :return:
     """
     
-    print("\n\n")
+    print("\n")
     print("*" * 15)
-    print("Printing command variable in parse_command:")
-    print(command)
+    print("command variable in parse_command: {0}".format(command))
+    print("dm_message var in parse_command: {0}".format(dm_message))
+    print("
     print("@pybot in command?: {0}".format("@pybot" in command))
     print("<@U1J60L0F2> in command?: {0}".format("<@U1J60L0F2>" in command))
     print("*" * 15)
