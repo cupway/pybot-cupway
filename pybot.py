@@ -226,11 +226,17 @@ def parse_command(command, dm_message):
         return command
 
     # public chat room message and @pybot in message
-    elif (dm_message == False) and ("<@U1J60L0F2>" in command == True):
+    #elif (dm_message == False) and ("<@U1J60L0F2>" in command == True):
+    elif dm_message == False:
         print("public message and @pybot found block hit!")
         command = command.lstrip("<@U1J60L0F2> ")
         print("new command is {0}: ".format(command))
         return command
+
+    else:
+        print("*" * 15)
+        print("Else block hit -- this shouldn't happen")
+        print("*" * 15)
         
 if __name__ == "__main__":
     READ_WEBSOCKET_DELAY = 1
