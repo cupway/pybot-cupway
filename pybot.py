@@ -264,8 +264,9 @@ if __name__ == "__main__":
                             # Need to check against actual bot_id if more bots added
                             if command and channel and (bot_id_in_event == False):
                                 handle_command(command, channel, all_commands)
-                        except KeyError as key_err:
-                            print(key_err)
+                        except KeyError as e:
+                            print("Caught KeyError")
+                            print(e)
                             pass
             time.sleep(READ_WEBSOCKET_DELAY)
     else:
