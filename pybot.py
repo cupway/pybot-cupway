@@ -213,7 +213,7 @@ def parse_command(command, dm_message):
     print("\n")
     print("*" * 15)
     print("command variable in parse_command: {0}".format(command))
-    print("dm_message var in parse_command: {0}".format(dm_message))
+    print("dm_message variable status in parse_command: {0}".format(dm_message))
     print("@pybot in command?: {0}".format("@pybot" in command))
     print("<@U1J60L0F2> in command?: {0}".format("<@U1J60L0F2>" in command))
     print("*" * 15)
@@ -260,6 +260,7 @@ if __name__ == "__main__":
                         bot_id_in_event = "bot_id" in event
                         command = event["text"]
                         channel = event["channel"]
+                        print("channel is {0}".format(channel))
                         # public chat or direct message with bot?
                         dm_message = False
                         if channel.startswith("D"):
