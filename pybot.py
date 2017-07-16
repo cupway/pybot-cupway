@@ -24,7 +24,7 @@ except KeyError:
 # Use the BOT_ID gathered from get_pybot_id.py
 BOT_ID = "U1J60L0F2"
 
-AT_BOT = "<@" + BOT_ID + ">:"
+#AT_BOT = "<@" + BOT_ID + ">:"
 
 # All possible commands
 all_commands = {
@@ -75,12 +75,13 @@ def help_menu(help_term=None):
 
     # Dictionary of help items. Keys are the command, value is the explanation
     help_items = {
-        "aboutyou": "Type `@pybot: aboutyou` --> returns information about @pybot",
-        "vidcard": "Type `@pybot: vidcard {dollar amount}` --> returns the number of video cards you could buy for that dollar amount.",
-        "gotme": "Type `@pybot: gotme` (alt: `got me`) --> returns a Game of Thrones quote from `https://got-quotes.herokuapp.com/quotes` API",
-        "king": "Type `@pybot: king` --> returns useful information about the King in the North",
-        "chaninfo": "Type `@pybot: chaninfo` --> returns channel information",
-        "gibberish": "Type `@pybot: gibberish` (alt: `nonsense`) --> returns gibberish"
+        "aboutyou": "Type `@pybot aboutyou` --> returns information about @pybot",
+        "vidcard": "Type `@pybot vidcard {dollar amount}` --> returns the number of video cards you could buy for that dollar amount.",
+        "gotme": "Type `@pybot gotme` (alt: `got me`) --> returns a Game of Thrones quote from `https://got-quotes.herokuapp.com/quotes` API",
+        "king": "Type `@pybot king` --> returns useful information about the King in the North",
+        "chaninfo": "Type `@pybot chaninfo` --> returns channel information",
+        "gibberish": "Type `@pybot gibberish` (alt: `nonsense`) --> returns gibberish",
+        "help" : "Type `@pybot help` --> returns help information"
     }
 
     output = ""
@@ -110,7 +111,7 @@ def handle_command(command, channel, all_commands):
     if command not in all_commands.values(): 
         response = "I don't understand that command. If this is an issue / error, please track it:\
         \nhttps://github.com/cupway/pybot-cupway/issues\
-        \nFor help, type `@pybot: help`"
+        \nFor help, type `@pybot help`"
 
     # Define the @pybot: chaninfo comamnd
     if command.startswith(all_commands["CHANNEL_INFO"]):
@@ -145,6 +146,7 @@ def handle_command(command, channel, all_commands):
 
     # Define the @pybot: help command
     if command.startswith(all_commands["HELP_COMMAND"]):
+        """
         # break the command sent to @pybot into a list
         help_string_list = command.split(" ")
         # user called just @pybot: help
@@ -155,7 +157,8 @@ def handle_command(command, channel, all_commands):
             response = help_menu(help_string_list[1])
         # user passes more than one term, default to plain @pybot: help
         if len(help_string_list) > 2:
-            response = help_menu()
+        """
+        response = help_menu()
 
     # Define the @pybot: aboutyou command
     if command.startswith(all_commands["ABOUT_COMMAND"]):
@@ -197,24 +200,49 @@ def handle_command(command, channel, all_commands):
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True, unfurl_links=False, unfurl_media=True)
 
-
-def parse_slack_output(slack_rtm_output):
+def parse_command(command, dm_message):
     """
-    Returns None unless message directed at bot.
+    Determines wether to pass a command to handle_command()
+    Public commands without @pybot return None instead of getting passed along
 
-    :param slack_rtm_output:
+    :param command:
+    :param pub_or_dm:
     :return:
     """
-    output_list = slack_rtm_output
+    
+    print("\n\n")
+    print("*" * 15)
+    print("Printing command variable in parse_command:")
+    print(command)
+    print("@pybot in command?: {0}".format("@pybot" in command))
+    print("<@U1J60L0F2> in command?: {0}".format("<@U1J60L0F2>" in command))
+    print("*" * 15)
 
+    if dm_message == True:
+        print("dm_message is True block hit!")
+        print("****** dm message command before: {0}".format(command))
+        if command.startswith("@pybot"):
+            command = command.lstrip("@pybot ")
+        print("****** dm message command after: {0}".format(command))
+        return command
+
+    # public chat room message and @pybot in message
+    elif (dm_message == False) and ("@pybot" in command == True):
+        print("public message and @pybot found block hit!")
+        command = command.lstrip("@pybot ")
+        return command
+        
+
+    """         
     if output_list and len(output_list) > 0:
         for output in output_list:
             if output and "text" in output and AT_BOT in output["text"]:
                 # return text after @ mention, whitespace removed
                 return output["text"].split(AT_BOT)[1].strip().lower(), \
                     output["channel"]
-    return None, None
-
+    #return None, None
+    return None
+    """
 
 if __name__ == "__main__":
     READ_WEBSOCKET_DELAY = 1
@@ -225,11 +253,19 @@ if __name__ == "__main__":
             if len(event_list) > 0:
                 for event in event_list:
                     # we only care about "message" type events
+                    print("*" * 15)
+                    print(event)
                     if event["type"] == "message":
                         # set to True only if message doesn't come from a bot
                         bot_id_in_event = "bot_id" in event
                         command = event["text"]
                         channel = event["channel"]
+                        # public chat or direct message with bot?
+                        dm_message = False
+                        if channel.startswith("D"):
+                            dm__message = True
+                        #if command and (bot_id_in_event == True):
+                        command = parse_command(command, dm_message)
                         # Only respond if the bot didn't issue the prior event text
                         # Need to check against actual bot_id if more bots added
                         if command and channel and (bot_id_in_event == False):
