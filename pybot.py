@@ -232,10 +232,11 @@ def parse_command(command, dm_message):
         command = command.lstrip("<@U1J60L0F2> ")
         return command
 
+    # we don't want the bot to do anything
     else:
         print("\n")
         print("*" * 15)
-        print("Else block hit -- this shouldn't happen")
+        print("Else block hit in parse_command() -- hopefully the bot shoudln't be responding?")
         return None
         
 if __name__ == "__main__":
