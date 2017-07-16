@@ -220,30 +220,18 @@ def parse_command(command, dm_message):
 
     if dm_message == True:
         print("dm_message is True block hit!")
-        print("****** dm message command before: {0}".format(command))
         if command.startswith("<@U1J60L0F2>"):
             command = command.lstrip("<@U1J60L0F2> ")
-        print("****** dm message command after: {0}".format(command))
+        print("new command is {0}: ".format(command))
         return command
 
     # public chat room message and @pybot in message
     elif (dm_message == False) and ("<@U1J60L0F2>" in command == True):
         print("public message and @pybot found block hit!")
         command = command.lstrip("<@U1J60L0F2> ")
+        print("new command is {0}: ".format(command))
         return command
         
-
-    """         
-    if output_list and len(output_list) > 0:
-        for output in output_list:
-            if output and "text" in output and AT_BOT in output["text"]:
-                # return text after @ mention, whitespace removed
-                return output["text"].split(AT_BOT)[1].strip().lower(), \
-                    output["channel"]
-    #return None, None
-    return None
-    """
-
 if __name__ == "__main__":
     READ_WEBSOCKET_DELAY = 1
     if slack_client.rtm_connect():
