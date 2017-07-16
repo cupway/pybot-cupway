@@ -260,11 +260,11 @@ if __name__ == "__main__":
                         bot_id_in_event = "bot_id" in event
                         command = event["text"]
                         channel = event["channel"]
-                        print("channel is {0}".format(channel))
+                        #print("channel is {0}".format(channel))
                         # public chat or direct message with bot?
                         dm_message = False
                         if channel.startswith("D"):
-                            dm__message = True
+                            dm_message = True
                         #if command and (bot_id_in_event == True):
                         command = parse_command(command, dm_message)
                         # Only respond if the bot didn't issue the prior event text
