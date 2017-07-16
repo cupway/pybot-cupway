@@ -21,23 +21,28 @@ A Python bot for a [Slack](https://slack.com/) group. It uses the [Python slack 
   * [GoT API: Quotes storage `.rb` file](https://github.com/wsizoo/game-of-thrones-quotes/blob/master/db/seeds.rb)
 * [Unix POSIX signals](https://en.wikipedia.org/wiki/Unix_signal#POSIX_signals)
 
-### Pushing Updates to Heroku
+### Pushing Updates to GitHub & Heroku
 
-* You must added as a *Collaborator* in the Heroku app config to push updates to the app. 
+* Clone the pybot-cupway repo: https://github.com/cupway/pybot-cupway:
+  * `git clone https://github.com/cupway/pybot-cupway.git`
 * Download and install the [Heroku Toolbelt](https://toolbelt.heroku.com/).
+* Login to Heroku:  
+  * `$ heroku login`
+* Add the application ([Creating a Heroku remote](https://devcenter.heroku.com/articles/git#creating-a-heroku-remote)):  
+  * `$ heroku git:remote -a pybot-cupway`
+* Make changes to local repo
+* Deploy code to GitHub:  
+  * `$ git push heroku master`
+* Test in Slack, tailing the Heroku log
+  * `$ heroku logs --app pybot-cupway --tail`
 
-Login to Heroku:  
-`$ heroku login`
+#### Permissions
+* You must have rights to push to to cupway/pybot-cupway repo on GitHub
+* You must added as a *Collaborator* in the Heroku app config to push updates to the app. 
 
-Add the application ([Creating a Heroku remote](https://devcenter.heroku.com/articles/git#creating-a-heroku-remote)):  
-`$ heroku git:remote -a pybot-cupway`
-
-Deploy code:  
-`$ git push heroku master`
 
 #### Troubleshooting
-
-After pushing, ensure `@pybot` is still *green* in the DMs list (he's online 24/7):  
+After pushing, ensure `@pybot` is still *green* in the DMs list (bot should be online 24/7):  
 
 ![foo](images/pybot_green.jpg)
 
@@ -86,6 +91,17 @@ Display running Heroku processes:
 
 Check Heroku logs (get last 50 lines):  
 `$ heroku logs -n 50`
+
+### Useful Heroku Toolbelt Commands
+
+```
+$ heroku ps --app pybot-cupway
+$ heroku ps:stop dyno --app pybot-cupway
+$ heroku ps:stop worker --app pybot-cupway
+$ heroku ps --app pybot-cupway
+$ heroku ps:scale worker=1
+$ heroku logs --app pybot-cupway --tail
+```
 
 ### Heroku Configuration Notes
 

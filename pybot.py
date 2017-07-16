@@ -218,25 +218,18 @@ def parse_command(command, dm_message):
     print("<@U1J60L0F2> in command?: {0}".format("<@U1J60L0F2>" in command))
     print("*" * 15)
     
-
     pybot_in_command = False
     if "<@U1J60L0F2>" in command:
         pybot_in_command = True
 
     if dm_message == True:
-        print("dm_message is True block hit!")
         if command.startswith("<@U1J60L0F2>"):
             command = command.lstrip("<@U1J60L0F2> ")
-        print("new command is {0}: ".format(command))
         return command
 
     # public chat room message and @pybot in message
     if (dm_message == False) and (pybot_in_command == True):
-    #elif (dm_message == False) and ("<@U1J60L0F2>" in command == True):
-    #elif dm_message == False:
-        print("public message and @pybot found block hit!")
         command = command.lstrip("<@U1J60L0F2> ")
-        print("new command is {0}: ".format(command))
         return command
 
     else:
@@ -260,17 +253,14 @@ if __name__ == "__main__":
                         bot_id_in_event = "bot_id" in event
                         command = event["text"]
                         channel = event["channel"]
-                        #print("channel is {0}".format(channel))
                         # public chat or direct message with bot?
                         dm_message = False
                         if channel.startswith("D"):
                             dm_message = True
-                        #if command and (bot_id_in_event == True):
                         command = parse_command(command, dm_message)
                         # Only respond if the bot didn't issue the prior event text
                         # Need to check against actual bot_id if more bots added
                         if command and channel and (bot_id_in_event == False):
-                            print("command before handle_command() call: {0}".format(command))
                             handle_command(command, channel, all_commands)
             time.sleep(READ_WEBSOCKET_DELAY)
     else:
